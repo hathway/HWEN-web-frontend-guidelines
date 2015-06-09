@@ -1,6 +1,6 @@
 # Frontend Guidelines
 
-**Table of Contents** 
+**Table of Contents**
 
 - [HTML](#html)
 	- [Semantics](#semantics)
