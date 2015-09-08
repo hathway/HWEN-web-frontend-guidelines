@@ -1,3 +1,9 @@
+---
+layout: site
+title: Web Frontend Development Guidelines
+category: process
+---
+
 # Frontend Guidelines
 
 **Table of Contents**
