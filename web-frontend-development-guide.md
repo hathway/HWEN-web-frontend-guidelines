@@ -1,7 +1,7 @@
 ---
 layout: site
 title: Web Frontend Development Guidelines
-category: process
+category: style-guides
 ---
 
 # Frontend Guidelines
