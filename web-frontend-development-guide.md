@@ -1,3 +1,9 @@
+---
+layout: site
+title: Web Frontend Development Guidelines
+category: style-guides
+---
+
 # Frontend Guidelines
 
 **Table of Contents**
