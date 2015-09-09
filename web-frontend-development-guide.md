@@ -1,5 +1,5 @@
 ---
-layout: site
+layout: fullpage
 title: Web Frontend Development Guidelines
 category: style-guides
 ---
