@@ -32,8 +32,8 @@ category: style-guides
     - [Classes](#classes)
     - [IDs](#ids)
   - [Naming Conventions](#naming-conventions)
-    - [BEM](#bem)
     - [OOCSS](#oocss)
+    - [BEM](#bem)
   - [Specificity](#specificity)
     - [Minimizing Specificity](#minimizing-specificity)
     - [Overriding](#overriding)
@@ -525,9 +525,40 @@ IDs are fine in markup as they can be targeted by JavaScript and can identify un
 
 ### Naming Conventions
 
+#### OOCSS
+
+OOCSS/SMACSS refers to a separation of concerns between structure and presenational/visual styles. Look for patterns that can be reused to promote modularity in CSS and HTML structure. Modules should be used whenever possible to decrease the amount of code written, minimize overriding styles, and make CSS more navigable and manageable.
+
+Resources for learning OOCSS/SMACSS:
+http://code.tutsplus.com/tutorials/object-oriented-css-what-how-and-why--net-6986
+http://drewbarontini.com/articles/single-responsibility/
+https://smacss.com/
+http://www.smashingmagazine.com/2011/12/an-introduction-to-object-oriented-css-oocss/
+http://www.stubbornella.org/content/2010/06/25/the-media-object-saves-hundreds-of-lines-of-code/
+
 #### BEM
 
-#### OOCSS
+BEM stands for Block, Element, Modifier. This, along with OOCSS and the Single Responsibility Pricinciple are an effort to keep our CSS highly modular.
+
+A component (or block) is given a descriptive name. A block is usually a parent element containing one or more child elements, e.g. ```search```.
+
+An element is a child of a block. It's class name is written with the name of the block followed by double underscores followed by the name of the element, e.g. ```search__field```.
+
+A modifier is a class that changes the style of a block or element, e.g. ```search--fullwidth```.
+
+```html
+<div class="search search--fullwidth">
+  <input class="search__field">
+  <button class="button search__button button--large">Submit</button>
+</div>
+```
+
+Not everything needs to use BEM. A logo for instance might be a single element that isn't dependent on a parent element. However, it could use aspects of BEM, like modifer: ```<img src="..." class="logo logo__small" alt="">```. Use logic to determine what would be best served using BEM. The main goals are modularity and making it immediately apparent to other developers how each element relates to another, and how to easily style them.
+
+Resources for learning BEM:
+https://css-tricks.com/bem-101/
+https://medium.com/objects-in-space/objects-in-space-f6f404727
+https://en.bem.info/
 
 ### Specificity
 
