@@ -530,11 +530,11 @@ IDs are fine in markup as they can be targeted by JavaScript and can identify un
 OOCSS/SMACSS refers to a separation of concerns between structure and presenational/visual styles. Look for patterns that can be reused to promote modularity in CSS and HTML structure. Modules should be used whenever possible to decrease the amount of code written, minimize overriding styles, and make CSS more navigable and manageable.
 
 Resources for learning OOCSS/SMACSS:
-http://code.tutsplus.com/tutorials/object-oriented-css-what-how-and-why--net-6986
-http://drewbarontini.com/articles/single-responsibility/
-https://smacss.com/
-http://www.smashingmagazine.com/2011/12/an-introduction-to-object-oriented-css-oocss/
-http://www.stubbornella.org/content/2010/06/25/the-media-object-saves-hundreds-of-lines-of-code/
+* http://code.tutsplus.com/tutorials/object-oriented-css-what-how-and-why--net-6986
+* http://drewbarontini.com/articles/single-responsibility/
+* https://smacss.com/
+* http://www.smashingmagazine.com/2011/12/an-introduction-to-object-oriented-css-oocss/
+* http://www.stubbornella.org/content/2010/06/25/the-media-object-saves-hundreds-of-lines-of-code/
 
 #### BEM
 
