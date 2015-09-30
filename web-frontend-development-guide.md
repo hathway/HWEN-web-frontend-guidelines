@@ -19,29 +19,44 @@ category: style-guides
   - [Language](#language)
   - [Performance](#performance)
 - [CSS](#css)
-  - [CSS Syntax](#css-syntax)
-  - [Editor preferences](#editor-preferences)
-  - [Preprocessors](#preprocessors)
-  - [Declaration order](#declaration-order)
-  - [Single declarations](#single-declarations)
-  - [Classes](#classes)
+  - [Coding Style](#coding-style)
+    - [CSS Syntax](#css-syntax)
+    - [Single declarations](#single-declarations)
+    - [Shorthand notation](#shorthand-notation)
+    - [Units](#units)
+    - [Colors](#colors)
+    - [Language](#language)
+    - [Editor preferences](#editor-preferences)
   - [Selectors](#selectors)
-  - [Organization](#organization)
-  - [Media queries](#media-queries)
-  - [Box model](#box-model)
-  - [Flow](#flow)
-  - [Positioning](#positioning)
+    - [CSS Selectors](#css-selectors)
+    - [Classes](#classes)
+    - [IDs](#ids)
+  - [Naming Conventions](#naming-conventions)
+    - [OOCSS](#oocss)
+    - [BEM](#bem)
   - [Specificity](#specificity)
-  - [Overriding](#overriding)
-  - [Inheritance](#inheritance)
-  - [Shorthand notation](#shorthand-notation)
-  - [Language](#language)
-  - [Vendor prefixes](#vendor-prefixes)
-  - [Animations](#animations)
-  - [Units](#units)
-  - [Colors](#colors)
-  - [Drawing](#drawing)
-  - [Hacks](#hacks)
+    - [Minimizing Specificity](#minimizing-specificity)
+    - [Overriding](#overriding)
+    - [Inheritance](#inheritance)
+  - [Preprocessors](#preprocessors)
+    - [SASS/SCSS](#sass-scss)
+  - [Organization](#organization)
+    - [Organizing CSS](#organizing-css)
+    - [Declaration order](#declaration-order)
+  - [Responsive](#responsive)
+    - [Media queries](#media-queries)
+  - [Positioning](#positioning)
+    - [Box model](#box-model)
+    - [Flow](#flow)
+    - [Positioning Elements](#positioning-elements)
+  - [Animation](#animation)
+    - [CSS Animation](#css-animation)
+    - [js-prefix](#js-prefix)
+  - [Browser Support](#browser-supoort)
+    - [Vendor prefixes](#vendor-prefixes)
+  - [General](#general)
+    - [Drawing](#drawing)
+    - [Hacks](#hacks)
 - [JavaScript](#javascripts)
   - [Performance](#performance)
   - [Statelessness](#statelessness)
@@ -274,7 +289,9 @@ important factor.
 
 ## CSS
 
-### CSS Syntax
+### Coding Style
+
+#### CSS Syntax
 
 * Use soft tabs with two spaces—they're the only way to guarantee code renders the same in any environment.
 * When grouping selectors, keep individual selectors to a single line.
@@ -310,73 +327,8 @@ Don't include spaces after commas *within* `rgb(), rgba(), hsl(), hsla(),` or `r
   box-shadow: 0px 1px 2px #ccc, inset 0px 1px 0px #fff;
 }
 ```
-### Editor preferences
 
-* Set your editor to the following settings to avoid common code inconsistencies and dirty diffs:
-* Use soft-tabs set to two spaces.
-* Trim trailing white space on save.
-* Set encoding to UTF-8.
-* Add new line at end of files.
-
-Consider documenting and applying these preferences to your project's `.editorconfig` file. For an example, see [the one in Bootstrap](https://github.com/twbs/bootstrap/blob/master/.editorconfig). Learn more about [EditorConfig](http://editorconfig.org/).
-
-### Preprocessors
-
-Hathway uses [Sass](http://sass-lang.com/) for preprocessing CSS. Use the SCSS syntax over the Sass syntax, as it is syntactically closer to CSS and easy to port over if needed.
-
-Learn to use and take advantage of variables and mixins to avoid repetition and make stylesheet-wide updates easier, but not at the expense of readability.
-
-Break your CSS up into partials/components for better organization and readability (and import into your main SCSS file).
-
-Avoid unnecessary nesting. Just because you can nest, doesn't mean you always should. Consider nesting only if you must scope styles to a parent and if there are multiple elements to be nested.
-
-Never process Sass/CSS in the browser. Always compile locally before deploying.
-
-### Declaration order
-
-Related property declarations should be grouped together following the order:
-
-* Positioning
-* Box model
-* Typographic
-* Visual
-
-Positioning comes first because it can remove an element from the normal flow of the document and override box model related styles. The box model comes next as it dictates a component's dimensions and placement.
-
-Everything else takes place inside the component or without impacting the previous two sections, and thus they come last.
-
-```css
-.declaration-order {
-  /* Positioning */
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 100;
-
-  /* Box-model */
-  display: block;
-  float: right;
-  width: 100px;
-  height: 100px;
-
-  /* Typography */
-  font: normal 13px "Helvetica Neue", sans-serif;
-  line-height: 1.5;
-  color: #333;
-  text-align: center;
-
-  /* Visual */
-  background-color: #f5f5f5;
-  border: 1px solid #e5e5e5;
-  border-radius: 3px;
-
-  /* Misc */
-  opacity: 1;
-}
-```
-### Single declarations
+#### Single declarations
 
 In instances where a rule set includes **only one declaration**, consider removing line breaks for readability and faster editing. Any rule set with multiple declarations should be split to separate lines.
 
@@ -400,26 +352,105 @@ The key factor here is error detection—e.g., a CSS validator stating you have 
 .icon-account { background-position: 0px -40px; }
 ```
 
-### Classes
+#### Shorthand notation
 
-* Avoid excessive and arbitrary shorthand notation. `.btn` is useful for `button,` but `.s` doesn't mean anything.
-* Keep classes as short and succinct as possible.
-* Use meaningful names; use structural or purposeful names over presentational.
-* Prefix classes based on the closest parent or base class.
+Strive to limit use of shorthand declarations to instances where you must explicitly set all the available values. Common overused shorthand properties include:
+
+* `padding`
+* `margin`
+* `font`
+* `background`
+* `border`
+* `border-radius`
+
+Often times we don't need to set all the values a shorthand property represents. For example, HTML headings only set top and bottom margin, so when necessary, only override those two values. Excessive use of shorthand properties often leads to sloppier code with unnecessary overrides and unintended side effects.
+The Mozilla Developer Network has a great article on [shorthand properties](https://developer.mozilla.org/en-US/docs/Web/CSS/Shorthand_properties) for those unfamiliar with notation and behavior.
 
 ```css
 /* bad */
-.t { ... }
-.red { ... }
-.header { ... }
+.element {
+  margin: 0 0 10px;
+  background: red;
+  background: url("image.jpg");
+  border-radius: 3px 3px 0 0;
+}
 
 /* good */
-.tweet { ... }
-.important { ... }
-.tweet-header { ... }
+.element {
+  margin-bottom: 10px;
+  background-color: red;
+  background-image: url("image.jpg");
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
 ```
 
+#### Units
+
+Favor `px` over `rem` or `em`. Favor `rem` if you use relative units. Prefer seconds over
+milliseconds. Use unitless values for things like line-height.
+
+```css
+/* bad */
+div {
+  margin: 0;
+  font-size: .9em;
+  line-height: 22px;
+  transition: 500ms;
+}
+
+/* good */
+div {
+  margin: 0px;
+  font-size: 13px;
+  line-height: 1.5;
+  transition: .5s;
+}
+```
+
+#### Colors
+
+If you need transparency, use `rgba`. Otherwise, always use the hexadecimal format.
+
+```css
+/* bad */
+div {
+  color: hsl(103, 54%, 43%);
+}
+
+/* good */
+div {
+  color: #5a3;
+}
+```
+
+#### Language
+
+Prefer English over math.
+
+```css
+/* bad */
+:nth-child(2n + 1) {
+  transform: rotate(360deg);
+}
+
+/* good */
+:nth-child(odd) { transform: rotate(1turn); }
+```
+
+#### Editor preferences
+
+* Set your editor to the following settings to avoid common code inconsistencies and dirty diffs:
+* Use soft-tabs set to two spaces.
+* Trim trailing white space on save.
+* Set encoding to UTF-8.
+* Add new line at end of files.
+
+Consider documenting and applying these preferences to your project's `.editorconfig` file. For an example, see [the one in Bootstrap](https://github.com/twbs/bootstrap/blob/master/.editorconfig). Learn more about [EditorConfig](http://editorconfig.org/).
+
 ### Selectors
+
+#### CSS Selectors
 
 * Use classes over generic element tag for optimum rendering performance.
 * Avoid using several attribute selectors (e.g., `[class^="..."]`) on commonly occuring components. Browser performance is known to be impacted by these.
@@ -468,14 +499,190 @@ span { ... }
 .tweet-header .username { ... }
 .tweet .avatar { ... }
 ```
+
+#### Classes
+
+* Avoid excessive and arbitrary shorthand notation. `.btn` is useful for `button,` but `.s` doesn't mean anything.
+* Keep classes as short and succinct as possible.
+* Use meaningful names; use structural or purposeful names over presentational.
+* Prefix classes based on the closest parent or base class.
+
+```css
+/* bad */
+.t { ... }
+.red { ... }
+.header { ... }
+
+/* good */
+.tweet { ... }
+.important { ... }
+.tweet-header { ... }
+```
+
+#### IDs
+
+IDs are fine in markup as they can be targeted by JavaScript and can identify unique elements, but should be used sparingly in CSS. IDs have higher specificity than classes and element selectors, making them difficult to override.
+
+### Naming Conventions
+
+#### OOCSS
+
+OOCSS/SMACSS refers to a separation of concerns between structure and presenational/visual styles. Look for patterns that can be reused to promote modularity in CSS and HTML structure. Modules should be used whenever possible to decrease the amount of code written, minimize overriding styles, and make CSS more navigable and manageable.
+
+Resources for learning OOCSS/SMACSS:
+* http://code.tutsplus.com/tutorials/object-oriented-css-what-how-and-why--net-6986
+* http://drewbarontini.com/articles/single-responsibility/
+* https://smacss.com/
+* http://www.smashingmagazine.com/2011/12/an-introduction-to-object-oriented-css-oocss/
+* http://www.stubbornella.org/content/2010/06/25/the-media-object-saves-hundreds-of-lines-of-code/
+
+#### BEM
+
+BEM stands for Block, Element, Modifier. This, along with OOCSS and the Single Responsibility Pricinciple are an effort to keep our CSS highly modular.
+
+A component (or block) is given a descriptive name. A block is usually a parent element containing one or more child elements, e.g. ```search```.
+
+An element is a child of a block. It's class name is written with the name of the block followed by double underscores followed by the name of the element, e.g. ```search__field```.
+
+A modifier is a class that changes the style of a block or element, e.g. ```search--fullwidth```.
+
+```html
+<div class="search search--fullwidth">
+  <input class="search__field">
+  <button class="button search__button button--large">Submit</button>
+</div>
+```
+
+Not everything needs to use BEM. A logo for instance might be a single element that isn't dependent on a parent element. However, it could use aspects of BEM, like modifer: ```<img src="..." class="logo logo__small" alt="">```. Use logic to determine what would be best served using BEM. The main goals are modularity and making it immediately apparent to other developers how each element relates to another, and how to easily style them.
+
+Resources for learning BEM:
+https://css-tricks.com/bem-101/
+https://medium.com/objects-in-space/objects-in-space-f6f404727
+https://en.bem.info/
+
+### Specificity
+
+#### Minimizing Specificity
+
+Don't make values and selectors hard to override. Minimize the use of `id`'s
+and avoid `!important`.
+
+```css
+/* bad */
+.bar {
+  color: green !important;
+}
+.foo {
+  color: red;
+}
+
+/* good */
+.foo.bar { color: green; }
+.foo { color: red; }
+```
+
+#### Overriding
+
+Overriding styles makes selectors and debugging harder. Avoid it when possible.
+
+```css
+/* bad */
+li {
+  visibility: hidden;
+}
+li:first-child {
+  visibility: visible;
+}
+
+/* good */
+li + li { visibility: hidden; }
+```
+
+#### Inheritance
+
+Don't duplicate style declarations that can be inherited.
+
+```css
+/* bad */
+div h1, div p {
+  text-shadow: 0 1px 0 #fff;
+}
+
+/* good */
+div { text-shadow: 0 1px 0 #fff; }
+```
+
+### Preprocessors
+
+#### SASS/SCSS
+
+Hathway uses [Sass](http://sass-lang.com/) for preprocessing CSS. Use the SCSS syntax over the Sass syntax, as it is syntactically closer to CSS and easy to port over if needed.
+
+Learn to use and take advantage of variables and mixins to avoid repetition and make stylesheet-wide updates easier, but not at the expense of readability.
+
+Break your CSS up into partials/components for better organization and readability (and import into your main SCSS file).
+
+Avoid unnecessary nesting. Just because you can nest, doesn't mean you always should. Consider nesting only if you must scope styles to a parent and if there are multiple elements to be nested.
+
+Never process Sass/CSS in the browser. Always compile locally before deploying.
+
 ### Organization
+
+#### Organizing CSS
 
 * Organize sections of code by component.
 * Develop a consistent commenting hierarchy.
 * Use consistent white space to your advantage when separating sections of code for scanning larger documents.
 * When using multiple CSS files, break them down by component instead of page. Pages can be rearranged and components moved.
 
-### Media queries
+#### Declaration order
+
+Related property declarations should be grouped together following the order:
+
+* Positioning
+* Box model
+* Typographic
+* Visual
+
+Positioning comes first because it can remove an element from the normal flow of the document and override box model related styles. The box model comes next as it dictates a component's dimensions and placement.
+
+Everything else takes place inside the component or without impacting the previous two sections, and thus they come last.
+
+```css
+.declaration-order {
+  /* Positioning */
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+
+  /* Box-model */
+  display: block;
+  float: right;
+  width: 100px;
+  height: 100px;
+
+  /* Typography */
+  font: normal 13px "Helvetica Neue", sans-serif;
+  line-height: 1.5;
+  color: #333;
+  text-align: center;
+
+  /* Visual */
+  background-color: #f5f5f5;
+  border: 1px solid #e5e5e5;
+  border-radius: 3px;
+
+  /* Misc */
+  opacity: 1;
+}
+```
+
+### Responsive
+
+#### Media queries
 
 Write CSS to be mobile-first. Let base styles apply to mobile devices, and then write media queries to override the styles for larger screens. Minify use of media queries as much as possible. Minify number of breakpoints as much as possible. Try to stick to around 3 - 4 breakpoints.
 
@@ -494,7 +701,9 @@ Try to avoid closed breakpoints (eg. `@media (min-width: 768px) and  (max-width:
 }
 ```
 
-### Box model
+### Positioning
+
+#### Box model
 
 The box model should ideally be the same for the entire document. A global
 `* { box-sizing: border-box; }` is fine, but don't change the default box model
@@ -514,7 +723,7 @@ div {
 }
 ```
 
-### Flow
+#### Flow
 
 Don't change the default behavior of an element if you can avoid it. Keep elements in the
 natural document flow as much as you can. For example, removing the white-space below an
@@ -545,7 +754,7 @@ div {
 }
 ```
 
-### Positioning
+#### Positioning Elements
 
 There are many ways to position elements in CSS but try to restrict yourself to the
 properties/values below. By order of preference:
@@ -559,103 +768,48 @@ position: absolute;
 position: fixed;
 ```
 
-### Specificity
+### Animation
 
-Don't make values and selectors hard to override. Minimize the use of `id`'s
-and avoid `!important`.
+#### CSS Animation
 
-```css
-/* bad */
-.bar {
-  color: green !important;
-}
-.foo {
-  color: red;
-}
-
-/* good */
-.foo.bar { color: green; }
-.foo { color: red; }
-```
-
-### Overriding
-
-Overriding styles makes selectors and debugging harder. Avoid it when possible.
+Favor transitions over animations. Avoid animating other properties than
+`opacity` and `transform`.
 
 ```css
 /* bad */
-li {
-  visibility: hidden;
+div:hover {
+  animation: move 1s forwards;
 }
-li:first-child {
-  visibility: visible;
-}
-
-/* good */
-li + li { visibility: hidden; }
-```
-
-### Inheritance
-
-Don't duplicate style declarations that can be inherited.
-
-```css
-/* bad */
-div h1, div p {
-  text-shadow: 0 1px 0 #fff;
+@keyframes move {
+  100% {
+    margin-left: 100px;
+  }
 }
 
 /* good */
-div { text-shadow: 0 1px 0 #fff; }
-```
-### Shorthand notation
-
-Strive to limit use of shorthand declarations to instances where you must explicitly set all the available values. Common overused shorthand properties include:
-
-* `padding`
-* `margin`
-* `font`
-* `background`
-* `border`
-* `border-radius`
-
-Often times we don't need to set all the values a shorthand property represents. For example, HTML headings only set top and bottom margin, so when necessary, only override those two values. Excessive use of shorthand properties often leads to sloppier code with unnecessary overrides and unintended side effects.
-The Mozilla Developer Network has a great article on [shorthand properties](https://developer.mozilla.org/en-US/docs/Web/CSS/Shorthand_properties) for those unfamiliar with notation and behavior.
-
-```css
-/* bad */
-.element {
-  margin: 0 0 10px;
-  background: red;
-  background: url("image.jpg");
-  border-radius: 3px 3px 0 0;
-}
-
-/* good */
-.element {
-  margin-bottom: 10px;
-  background-color: red;
-  background-image: url("image.jpg");
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+div:hover {
+  transition: 1s;
+  transform: translateX(100px);
 }
 ```
 
-### Language
+#### js-prefix
 
-Prefer English over math.
+Add a class with a prefix of ```js-``` to indicate elements that will be the targets of JavaScript manipulation. This makes it apparent Javascript code may be dependent on that a particular element's markup or structure, and therefore care should be taken when changing or restructuring the element.
 
-```css
-/* bad */
-:nth-child(2n + 1) {
-  transform: rotate(360deg);
-}
-
-/* good */
-:nth-child(odd) { transform: rotate(1turn); }
+```html
+<a class="js-add-to-cart button">Add to Cart</a>
 ```
 
-### Vendor prefixes
+In addition, add classes with a prefix of ```is-``` to indicate a visual element's state if it's being manipulated by JavaScript.
+
+```html
+<div class="modal is-visible"></div>
+```
+
+### Browser Support
+
+#### Vendor prefixes
 
 Kill obsolete vendor prefixes aggressively. If you need to use them, insert them before the
 standard property. Use of [Autoprefixer](https://github.com/postcss/autoprefixer) will speed up your workflow in this regard greatly. Make it part of your build process.
@@ -681,69 +835,9 @@ div {
 }
 ```
 
-### Animations
+### General
 
-Favor transitions over animations. Avoid animating other properties than
-`opacity` and `transform`.
-
-```css
-/* bad */
-div:hover {
-  animation: move 1s forwards;
-}
-@keyframes move {
-  100% {
-    margin-left: 100px;
-  }
-}
-
-/* good */
-div:hover {
-  transition: 1s;
-  transform: translateX(100px);
-}
-```
-
-### Units
-
-Favor `px` over `rem` or `em`. Favor `rem` if you use relative units. Prefer seconds over
-milliseconds. Use unitless values for things like line-height.
-
-```css
-/* bad */
-div {
-  margin: 0;
-  font-size: .9em;
-  line-height: 22px;
-  transition: 500ms;
-}
-
-/* good */
-div {
-  margin: 0px;
-  font-size: 13px;
-  line-height: 1.5;
-  transition: .5s;
-}
-```
-
-### Colors
-
-If you need transparency, use `rgba`. Otherwise, always use the hexadecimal format.
-
-```css
-/* bad */
-div {
-  color: hsl(103, 54%, 43%);
-}
-
-/* good */
-div {
-  color: #5a3;
-}
-```
-
-### Drawing
+#### Drawing
 
 Avoid HTTP requests when the resources are easily replicable with CSS.
 
@@ -764,7 +858,7 @@ div::before {
 }
 ```
 
-### Hacks
+#### Hacks
 
 Don't use them.
 
